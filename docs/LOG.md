@@ -1,7 +1,25 @@
 # LOG 
 
-## 20/01/2026 11h02 am 
+## 20/01/2026 16h51
 - [ ] Hoàn thành 
+
+### Context
+- Mục tiêu hiện tại: làm giao diện động cho website scan drivers. 
+
+### Đã làm
+- Đã hoàn thành, ở file `frontend/src/pages/scan-drivers/index.html`
+- Đã hoàn thành giao diện tĩnh. Gồm các thành phần cần có trong website, spacing cơ bản. 
+
+### Đang kẹt / dở
+
+### Hướng làm tiếp
+- Làm giao diện động bằng việc lập trình js ở file `frontend/src/pages/scan-drivers/scan-page.js`
+
+---
+
+
+## 20/01/2026 11h02 am 
+- [x] Hoàn thành 
 
 ### Context
 - Mục tiêu: làm giao diện FE tĩnh. 

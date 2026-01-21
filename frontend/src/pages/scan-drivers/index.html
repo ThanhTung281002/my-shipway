@@ -13,10 +13,206 @@
 
 <body class=" min-h-screen flex flex-col">
 
-    <div class="navbar flex-none">navbar</div>
+    <div class="navbar shadow-md flex-none">navbar</div>
 
-    <div class="container flex-1 bg-base-200">container
-        
+    <div class="container flex-1 bg-base-200 flex">
+        <div id="booking-details" class="card w-1/4 bg-base-100 m-4 ml-6">
+          <div class="card-body">
+            <h2 class="card-title text-3xl flex justify-center">Chi tiết đơn hàng</h2>
+
+            <div class="divider"></div>
+
+            <div class="info-section">
+            <div class="info">
+              <div class="label font-bold text-lg">Mã đơn hàng:</div>
+              <div class="content flex justify-center">ASDIOFJ-ALSDKFJ-ASKDFJ-LAKDSJF</div>
+            </div>
+
+
+            <div class="info mt-4">
+              <div class="labell font-bold text-lg">Địa chỉ nhận:</div>
+              <div class="content flex justify-center">12 Nguyễn Huệ, Quận 1, TP.HCM</div>
+            </div>
+
+
+            <div class="info mt-4">
+              <div class="labell font-bold text-lg">Địa chỉ giao:</div>
+              <div class="content flex justify-center">45 Quang Trung, Gò Vấp, TP.HCM</div>
+            </div>
+
+
+            <div class="info mt-6  flex items-center gap-2">
+              <div class="labell font-bold text-lg">Khối lượng hàng: </div>
+              <div class="content">1200kg</div>
+            </div>
+
+            
+            <div class="info mt-6  flex items-center gap-2">
+              <div class="labell font-bold text-lg">Giá thương lượng:</div>
+              <div class="content flex justify-center">300000 - 400000</div>
+            </div>
+
+          </div>
+
+          </div>
+
+        </div>
+
+
+        <div id="drivers-list" class="w-1/2 bg-base-100">
+          <h1 class="title text-4xl flex justify-center">Danh sách tài xế</h1>
+          <div class="list mt-12">
+            <table class="table">
+              <!-- head -->
+              <thead class="text-sm">
+                <tr>
+                  
+                  <th>Tài xế</th>
+                  <th>Loại xe</th>
+                  <th>Đánh giá</th>
+                  <!-- Mình muốn cái dưới phải wrap chứ không để thẳng hàng được không? -->
+                  <th>Khoảng cách tới điểm nhận hàng
+
+                  </th> 
+                  <th>Giá cước</th>
+                </tr>
+              </thead>
+
+
+              <tbody>
+                <!-- row 1 -->
+                <tr>
+                  
+                  <td>Nguyễn Văn Hùng</td>
+                  <td>Xe tải 1.5 tấn</td>
+                  <td>4.8 sao</td>
+                  <td>2.1 km</td>
+                  <td>420000</td>
+                </tr>
+
+                <!-- row 2 -->
+                <tr>
+                  
+                  <td>Nguyễn Văn Hùng</td>
+                  <td>Xe tải 1.5 tấn</td>
+                  <td>4.8 sao</td>
+                  <td>2.1 km</td>
+                  <td>420000</td>
+                </tr>
+
+                <!-- row 3 -->
+                <tr>
+                  
+                  <td>Nguyễn Văn Hùng</td>
+                  <td>Xe tải 1.5 tấn</td>
+                  <td>4.8 sao</td>
+                  <td>2.1 km</td>
+                  <td>420000</td>
+                </tr>
+
+                <!-- row 4 -->
+                <tr>
+                  
+                  <td>Nguyễn Văn Hùng</td>
+                  <td>Xe tải 1.5 tấn</td>
+                  <td>4.8 sao</td>
+                  <td>2.1 km</td>
+                  <td>420000</td>
+                </tr>
+
+                <!-- row 5 -->
+                <tr>
+                  
+                  <td>Nguyễn Văn Hùng</td>
+                  <td>Xe tải 1.5 tấn</td>
+                  <td>4.8 sao</td>
+                  <td>2.1 km</td>
+                  <td>420000</td>
+                </tr>
+              </tbody>
+
+
+            </table>
+
+          </div>
+
+          <div class="helper flex flex-col justify-center mt-20">
+            <!-- Vì sao mình làm như vậy thì nút button ở dưới lại trải dài ra hết chiều dài của parent luôn, mình chỉ muốn .helper-text và .btn nằm dọc ở giữa thôi -->
+            <p class="helper-text flex justify-center">Không hài lòng với danh sách tài xế</p>
+            <div class="button-section flex justify-center mt-4">
+              <button class="btn btn-ghost btn-outline text-lg">Tìm kiếm lại</button>
+            </div>
+            
+          </div>
+
+        </div> 
+
+
+
+        <div id="driver-detail" class="card w-1/4 bg-base-100 mr-8 m-6">
+          <div class="card-body">
+            <h2 class="card-title flex justify-center text-3xl">Thông tin tài xế</h2>
+
+            <div class="general-info mt-2">
+              <div class="info flex flex-cols gap-2">
+                <div class="labell">Tài xế</div>
+                <div class="content">Nguyễn Văn Hùng</div>
+              </div>
+              <div class="info flex flex-cols gap-2">
+                <div class="labell">Đánh giá</div>
+                <div class="content">4.8 sao</div>
+              </div>
+              <div class="info flex flex-cols gap-2">
+                <div class="labell">Giá cước:</div>
+                <div class="content">420000 đồng</div>
+              </div>
+              <div class="info flex flex-cols gap-2">
+                <div class="labell">Loại xe:</div>
+                <div class="content">Xe tải 1.5 tấn</div>
+              </div>
+
+            </div>
+
+            <div class="divider my-2"></div>
+
+
+            <!-- Tại sao mục decision-info các con của nó lại  -->
+            <div class="decision-info justify-start">
+              <div class="info flex justify-center gap-2">
+                <div class="labell">Tỉ lệ giao đúng hẹn (%):</div>
+                <div class="content">92</div>
+              </div>
+              <div class="info flex justify-center gap-2">
+                <div class="labell">Số chuyến đã giao: </div>
+                <div class="content">30</div>
+              </div>
+            </div>
+
+            <div class="divider my-2"></div>
+
+            <div class="map">
+              <div class="labell flex justify-center">Vị trí tài xế</div>
+              <div class="map-preview border rounded-lg overflow-hidden">
+                <img
+                  src="data:image/jpeg;base64,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"
+                  alt="Vị trí tài xế"
+                  class="w-full h-48 object-cover bg-base-200"
+                />
+              </div>
+            </div>
+            
+
+
+            <div class="card-action flex justify-center">
+              <button class="btn btn-accent text-lg">Chọn tài xế này</button>
+            </div>
+          </div>
+
+
+        </div>
+
+
+
     </div>
 
 
