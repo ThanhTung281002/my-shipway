@@ -1,7 +1,67 @@
 # LOG 
 
-## 20/01/2026 16h51
+
+## 22/01/2026 01h14am 
 - [ ] Hoàn thành 
+
+### Context
+- Mục tiêu hiện tại: làm UI động cho scan drivers services. 
+- Làm các trạng thái của của trang web. 
+
+### Đã làm
+- Đã xử lí xong toàn bộ hành vi chính của giao diện động. 
+
+
+### Đang kẹt / dở
+- Chưa có trạng thái đang load trang, đang poll kết quả tìm kiếm tài xế. 
+
+### Hướng làm tiếp
+- Tăng thời gian chờ của api và thời gian scan để làm các trạng thái của trang web. 
+
+---
+
+
+
+## 21/01/2026 19h02
+- [x] Hoàn thành 
+
+### Context
+- Mục tiêu hiện tại: làm UI động cho scan drivers services.
+
+### Đã làm
+- Đã làm hành vi load drivers details. 
+
+### Đang kẹt / dở
+- Cần làm gọn lại các phần mà chưa cần dùng đến lúc này như state, và nhìn nhận lại đúng về biến trạng thái state của mỗi trang web thì dùng để làm gì. Và sửa code lại cho đúng ở tầng controller và các tầng còn lại mà có sử dụng state. 
+
+### Hướng làm tiếp
+1. Dọn sạch các code liên quan đến state trang web mà chưa cần tới bây giờ. 
+2. Sử dụng state lại cho đúng trong tầng controller. 
+
+---
+
+## 21/01/2026 18h11 
+
+- [x] Hoàn thành 
+
+### Context
+- Mục tiêu hiện tại: làm giao diện động cho UI. 
+
+### Đã làm
+- Đã làm load cho thông tin đơn hàng. 
+
+### Đang kẹt / dở
+- Mình nói nè, đó là phần mà loading hay state chờ thì sẽ để sau, làm hành vi trước. Vì bị lấn vào nhiều cái cùng một lúc nên Tùng bị đơ ra vì nhiều cái phải làm một lúc. 
+- Set delay tất cả bằng 0. 
+
+### Hướng làm tiếp
+- Để coi đang làm tới đâu rồi 
+
+---
+
+
+## 20/01/2026 16h51
+- [x] Hoàn thành 
 
 ### Context
 - Mục tiêu hiện tại: làm giao diện động cho website scan drivers. 

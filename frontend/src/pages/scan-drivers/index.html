@@ -24,8 +24,9 @@
 
 
         <div id="drivers-list" class="w-1/2 bg-base-100 p-4">
-          <h1 class="title text-4xl flex justify-center">Danh sách tài xế</h1>
-          <div class="list mt-12">
+          <div id="drivers-found" class="hidden">
+              <h1 class="title text-4xl font-bold flex justify-center mt-8">Danh sách tài xế</h1>
+              <div class="list mt-6">
             <table class="table text-base">
               <!-- head -->
               <thead class="text-base font-bold">
@@ -40,24 +41,114 @@
               </thead>
 
 
-              <tbody id="table-body"></tbody>
+              <tbody id="drivers-skeleton" class="hidden">
+                <!-- trong đây sẽ để skeleton -->
+                <tr class="h-12">
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                </tr> 
+
+                <tr class="h-12">
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                </tr>
+                <tr class="h-12">
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                </tr>
+                <tr class="h-12">
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                </tr>
+                <tr class="h-12">
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                  <td class="skeleton"></td>
+                </tr>
+                
+              </tbody>
+
+              <tbody id="drivers-data" class="hidden"></tbody>
+
             </table>
-
-          </div>
-
-          <div id="rescan-helper" class="helper flex flex-col justify-center mt-20 hidden">
-            <p class="helper-text flex justify-center">Không hài lòng với danh sách tài xế</p>
-            <div class="button-section flex justify-center mt-4">
-              <button id="rescan-button" class="btn btn-ghost btn-outline text-lg">Tìm kiếm lại</button>
-            </div>
             
+            <div id="rescan-helper" class="helper flex flex-col justify-center mt-20 hidden">
+              <p class="helper-text flex justify-center">Không hài lòng với danh sách tài xế</p>
+              <div class="button-section flex justify-center mt-4">
+                <button id="rescan-button" class="btn btn-ghost btn-outline text-lg">Tìm kiếm lại</button>
+              </div>
+            </div>
+
+              </div>
+
           </div>
+
+
+          <div id="drivers-empty" class="hidden p-4">
+
+              <img
+                  src="../../../public/images/empty/no_driver.svg"
+                  alt="Không tìm thấy tài xế"
+                  class="max-w-100"
+              />
+
+              <div>
+                  <h2 class="flex justify-center text-3xl font-bold mt-12">Không tìm thấy tài xế phù hợp</h2>
+                  <p class="flex justify-center font-semibold mt-2">Không có tài xế nào chấp nhận mức giá hoặc đáp ứng yêu cầu trong thời gian chờ</p>
+              </div>
+              
+              <div class="flex justify-center mt-12">
+                  <button id="rescan-button2" class="btn btn-outline btn-neutral text-base">Tìm kiếm lại</button>
+              </div>
+          </div>
+
+
 
         </div> 
 
 
+        <div id="driver-detail" class="card w-1/4 bg-base-100 mr-8 m-6">
+          <div id="driver-detail-found" class="hidden"></div>
 
-        <div id="driver-detail" class="card w-1/4 bg-base-100 mr-8 m-6"></div>
+
+
+          <div id="driver-detail-scanning" class="hidden h-4/5 flex flex-col justify-center items-center gap-4 p-4">
+
+            <img
+                src="../../../public/images/select/select_driver.svg"
+                alt="Nhấn vào tài xế để xem chi tiết"
+                class="max-w-64"
+            />
+
+            <p class="font-bold mt-6 text-center text-xl mx-4">Chọn một tài xế để xem thông tin chi tiết</p>
+
+          </div>
+
+
+
+          <div id="driver-detail-timeout" class="hidden h-4/5 flex justify-center items-center">
+              <img
+                  src="../../../public/images/empty/no_driver_detail.svg"
+                  alt="Không tìm thấy tài xế phần detail"
+                  class="max-w-64"
+              />
+          </div>
+
+        </div>
 
     </div>
 
@@ -94,7 +185,7 @@
     </dialog>
 
 
-    <script src="/scan-page.js"></script>
+    <script src="./scan-page.js"></script>
 </body>
 </html>
 

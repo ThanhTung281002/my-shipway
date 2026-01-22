@@ -162,20 +162,22 @@ const state = {
     scan_id: null,
     booking: null, 
     drivers: null,
-    selectedDriver: null, 
-
-    // 2. trạng thái 
-    loading: false,
-    polling: false,
-    disabled: false
-    
+    selectedDriver: null
 }
 
-const DOM_LOG = "0. DOM:"; 
-const RENDER_LOG = "1. RENDER:"; 
-const API_LOG = "2. API:"; 
-const CONTROLLER_LOG = "3. CONTROLLER:"
-const EVENT_HANDLER_LOG = "4. EVENT HANDLER:"; 
+const UIState = {
+    loading: false,
+    disabled: false,
+    drivers: null // SCANNING || FOUND || TIMEOUT 
+}
+
+
+
+const DOM_LOG = "               0. DOM:"; 
+const RENDER_LOG = "            1. RENDER:"; 
+const API_LOG = "           2. API:"; 
+const CONTROLLER_LOG = "        3. CONTROLLER:"
+const EVENT_HANDLER_LOG = "   4. EVENT HANDLER:"; 
 const INIT_LOG = "5. INIT:"; 
 
 
@@ -280,18 +282,15 @@ function createDriverRow(driver) {
                 </tr>`; 
 }
 
-const rescanHelper = document.getElementById("rescan-helper"); console.log(`${DOM_LOG} rescan helper: ${rescanHelper}`); 
-function showRescanHelper() {
-    rescanHelper.classList.remove("hidden"); 
-}
 
-const tableBody = document.getElementById("table-body"); console.log(`${DOM_LOG} table body: ${tableBody}`); 
+
+const driversData = document.getElementById("drivers-data"); console.log(`${DOM_LOG} drivers data: ${driversData}`); 
 function renderDriversList(drivers) {
     console.log(`${RENDER_LOG} render danh sách tài xế: ${drivers}`); 
 
-    tableBody.innerHTML = ""; 
+    driversData.innerHTML = ""; 
     drivers.forEach((driver) => {
-        tableBody.innerHTML += createDriverRow(driver); 
+        driversData.innerHTML += createDriverRow(driver); 
     }); 
 
 
@@ -367,16 +366,16 @@ function createDriverDetailCard(driver) {
 }
 
 
-const driverDetail = document.getElementById("driver-detail"); console.log(`${DOM_LOG} driver details: ${driverDetail}`); 
+const driverDetailFound= document.getElementById("driver-detail-found"); console.log(`${DOM_LOG} driver details: ${driverDetailFound}`); 
 function renderDriverDetail(driver) {
     console.log(`${RENDER_LOG} render thông tin chi tiết tài xế: ${driver}`); 
 
     // 1. khởi tạo innerHTML trống
-    driverDetail.innerHTML = "";
+    driverDetailFound.innerHTML = "";
 
 
     // 2. Thêm thông tin chi tiết tài xế
-    driverDetail.innerHTML += createDriverDetailCard(driver); 
+    driverDetailFound.innerHTML += createDriverDetailCard(driver); 
 }
 
 
@@ -417,7 +416,6 @@ const loading = document.getElementById("loading"); console.log(`${DOM_LOG} load
 function showLoading() {
     console.log(`${RENDER_LOG} show loading`); 
 
-    state.loading = true; 
     loading.classList.remove("hidden"); 
     contentContainer.classList.add("hidden"); 
 }
@@ -425,23 +423,147 @@ function showLoading() {
 function hideLoading() {
     console.log(`${RENDER_LOG} hide loading`); 
 
-    state.loading = false; 
     loading.classList.add("hidden"); 
     contentContainer.classList.remove("hidden"); 
 }
 
 
+function disableModal() {
+  document.body.classList.add("pointer-events-none", "opacity-50");
+  document.getElementById("cancel-button").disabled = true; 
+  document.getElementById("confirm-button").disabled = true; 
+}
 
-// function showDriversListSkeleton() {
-//     console.log(`${RENDER_LOG} show drivers list skeleton`); 
-// }
-
-// function hideDriversListSkeleton() {
-//     console.log(`${RENDER_LOG} hide drivers list skeleton`); 
-// }
+function enableModal() {
+  document.body.classList.remove("pointer-events-none", "opacity-50");
+  document.getElementById("cancel-button").disabled = false; 
+  document.getElementById("confirm-button").disabled = false; 
+}
 
 
 
+
+
+// 1.1.2 state của dữ liệu danh sách tài xế 
+// note: vì driversData và driversSkeleton là giống như đối nhau nên cái này bật thì cái kia tắt nên không cần làm show drivers data riêng 
+const driversSkeleton = document.getElementById("drivers-skeleton"); console.log(`${DOM_LOG} drivers skeleton: ${driversSkeleton}`); 
+function showDriversSkeleton() {
+    console.log(`${RENDER_LOG} hiển thị drivers skeleton`); 
+    
+    driversData.classList.add("hidden");
+    driversSkeleton.classList.remove("hidden"); 
+}
+
+function hideDriversSkeleton() {
+    console.log(`${RENDER_LOG} ẩn drivers skeleton`); 
+
+    driversData.classList.remove("hidden");
+    driversSkeleton.classList.add("hidden"); 
+}
+
+
+
+
+// 1.1.3 state của nút tìm kiếm lại 
+const rescanHelper = document.getElementById("rescan-helper"); console.log(`${DOM_LOG} rescan helper: ${rescanHelper}`); 
+function showRescanHelper() {
+    console.log(`${RENDER_LOG} hiển thị nút tìm kiếm lại`); 
+
+    rescanHelper.classList.remove("hidden"); 
+}
+
+function hideRescanHelper() {
+    console.log(`${RENDER_LOG} ẩn nút tìm kiếm lại`); 
+
+    rescanHelper.classList.add("hidden"); 
+}
+
+
+// 1.1.4 state của trang danh sách tài xế found và timeout nói chung - 2 cái này ngược nhau nên hiển thằng này thì tắt thằng kia vậy thôi 
+const driversFound = document.getElementById("drivers-found"); console.log(`${DOM_LOG} drivers found: ${driversFound}`); 
+const driversEmpty = document.getElementById("drivers-empty"); console.log(`${DOM_LOG} drivers empty: ${driversEmpty}`); 
+
+function hideDriversEmpty() {
+    console.log(`${RENDER_LOG} ẩn trang báo không tìm thấy tài xế`); 
+
+    driversFound.classList.remove("hidden"); 
+    driversEmpty.classList.add("hidden"); 
+}
+
+function showDriversEmpty() {
+    console.log(`${RENDER_LOG} hiển thị trang báo không tìm thấy tài xế`); 
+
+    driversFound.classList.add("hidden"); 
+    driversEmpty.classList.remove("hidden"); 
+}
+
+
+
+
+
+// 1.1.5 state của trang thông tin chi tiết tài xế
+const driverDetailScanning = document.getElementById("driver-detail-scanning"); console.log(`${DOM_LOG} driver detail scanning: ${driverDetailScanning}`); 
+const driverDetailTimeout = document.getElementById("driver-detail-timeout"); console.log(`${DOM_LOG} driver detail timeout: ${driverDetailTimeout}`);
+
+function hideDriverDetailAll() {
+    console.log(`${RENDER_LOG} ẩn hết tất cả những phần của thông tin chi tiết tài xế`); 
+
+    driverDetailFound.classList.add("hidden"); 
+    driverDetailScanning.classList.add("hidden"); 
+    driverDetailTimeout.classList.add("hidden"); 
+}
+
+
+function showDriverDetailScanning() {
+    console.log(`${RENDER_LOG} hiển thị scanning của trang thông tin chi tiết`); 
+
+    driverDetailFound.classList.add("hidden"); 
+    driverDetailScanning.classList.remove("hidden"); 
+    driverDetailTimeout.classList.add("hidden");
+} 
+
+function showDriverDetailFound() {
+    console.log(`${RENDER_LOG} hiển thị found của trang thông tin chi tiết`); 
+
+    driverDetailFound.classList.remove("hidden"); 
+    driverDetailScanning.classList.add("hidden"); 
+    driverDetailTimeout.classList.add("hidden");
+} 
+
+
+function showDriverDetailTimeout() {
+    console.log(`${RENDER_LOG} hiển thị timeout của trang thông tin chi tiết`); 
+
+    driverDetailFound.classList.add("hidden"); 
+    driverDetailScanning.classList.add("hidden"); 
+    driverDetailTimeout.classList.remove("hidden");
+} 
+
+
+
+// hàm update UI Drivers
+function updateDriversUI() {
+    console.log(`${RENDER_LOG} cập nhập trạng thái UI liên quan đến tài xế`); 
+
+    if (UIState.drivers === "SCANNING") {
+        hideDriversEmpty(); 
+        hideRescanHelper(); 
+        showDriversSkeleton(); 
+        hideDriverDetailAll(); 
+        showDriverDetailScanning(); 
+
+    } else if (UIState.drivers === "FOUND") {
+        hideDriversEmpty(); 
+        hideDriversSkeleton(); 
+        showRescanHelper(); 
+        hideDriverDetailAll(); 
+        showDriverDetailFound(); 
+
+    } else if (UIState.drivers === "TIMEOUT") {
+        showDriversEmpty(); 
+        showDriverDetailTimeout(); 
+    }
+}
 
 
 
@@ -469,7 +591,7 @@ function hideLoading() {
 
 
 // ======================== 2. API ============================
-const delay = 0; // ms
+const delay = 3000; // ms
 
 // giống với api /scan-drivers/start
 async function fakeFetchBookingDetails() {
@@ -491,6 +613,7 @@ async function fakeFetchBookingDetails() {
     }); 
 }
 
+
 // đó là trả lại coi thử trong thời gian đó là nếu như lớn 
 async function fakeFetchScanResult() {
     console.log(`${API_LOG} fake fetch scan result`); 
@@ -510,6 +633,8 @@ async function fakeRescan() {
 
     return new Promise(resolve => {
         setTimeout(() => {
+            FAKE_SCAN_SESSION.status = "SCANNING"; 
+            FAKE_SCAN_SESSION.started_at = Date.now(); 
             resolve(); 
         }, delay); 
     }); 
@@ -529,7 +654,7 @@ async function fakeConfirm() {
 
 
 
-const scanTime = 0; // ms
+const scanTime = 10000; // ms
 // đây là hàm giả sử bên BE 
 function getScanResult() {
     console.log(`${API_LOG} giả lập BE, đó là tính toán xem thời gian từ lúc đầu scan và lúc hỏi kết quả có vượt qua scan time hay chưa`); 
@@ -541,8 +666,15 @@ function getScanResult() {
 
     // 2. nếu lớn hơn scan time thì trả found và trả lại list // sẽ thử nghiệm với timeout sau, lần lượt 
     if (time >= scanTime) {
-        FAKE_SCAN_SESSION.status = "FOUND"; 
-        FAKE_SCAN_SESSION.drivers = FAKE_DRIVERS; 
+        let randomNumber = Math.random(); 
+        if (randomNumber > 0.5) {
+           FAKE_SCAN_SESSION.status = "TIMEOUT"; 
+        } else {
+            FAKE_SCAN_SESSION.status = "FOUND"; 
+            FAKE_SCAN_SESSION.drivers = FAKE_DRIVERS; 
+        }
+        
+
     } 
 
     return {
@@ -599,7 +731,7 @@ async function loadBookingDetail() {
 }
 
 
-let pollTime = 0; //s
+let pollTime = 1000; //ms
 async function pollScanResult() {
     console.log(`${CONTROLLER_LOG} poll hỏi kết quả scan`); 
     const {scanStatus, drivers} = await fakeFetchScanResult(); 
@@ -612,8 +744,14 @@ async function pollScanResult() {
 
     } else if (scanStatus === "FOUND") {
         console.log(`${CONTROLLER_LOG} đã tìm thấy tài xế: ${drivers}`); 
+        UIState.drivers = "FOUND"; 
+        updateDriversUI(); 
         renderDriversList(state.drivers); 
-        showRescanHelper(); 
+        loadDetailOfFirstDriver();   
+    } else if (scanStatus === "TIMEOUT") {
+        console.log(`${CONTROLLER_LOG} không tìm thấy tài xế`); 
+        UIState.drivers = "TIMEOUT"; 
+        updateDriversUI(); 
     }
 }
 
@@ -637,13 +775,12 @@ async function handleRescan() {
     console.log(`${CONTROLLER_LOG} xử lí tìm kiếm lại`); 
 
     // 1. gửi yêu cầu tìm kiếm lại 
+    UIState.drivers = "SCANNING"; 
+    updateDriversUI(); 
     await fakeRescan(); 
 
     // 2. hỏi kết quả của scan 
     await pollScanResult(); 
-
-    // 3. load thông tin tài xế đầu tiên 
-    loadDetailOfFirstDriver(); 
 }
 
 
@@ -660,7 +797,9 @@ async function handleConfirmDriver() {
     console.log(`${CONTROLLER_LOG} xử lí xác nhận tài xế`); 
 
     // chờ gửi xử lí tài xế thôi 
+    disableModal(); 
     await fakeConfirm(); 
+    enableModal(); 
     closeConfirmModal(); 
 }
 
@@ -680,7 +819,7 @@ async function handleConfirmDriver() {
 
 
 // ======================== 4. EVENT HANDLER =======================
-tableBody.addEventListener("click", (e) => {
+driversData.addEventListener("click", (e) => {
   console.log(`${EVENT_HANDLER_LOG} click vào tài xế trong danh sách`); 
 
   // 1. tìm row 
@@ -710,7 +849,7 @@ document.getElementById("rescan-button").addEventListener("click", async () => {
 
 
 
-driverDetail.addEventListener("click", (e) => {
+driverDetailFound.addEventListener("click", (e) => {
     console.log(`${EVENT_HANDLER_LOG} click vào nút chọn tài xế này`); 
 
     // 1. tìm button 
@@ -748,6 +887,14 @@ document.getElementById("confirm-button").addEventListener("click", async () => 
 
 
 
+document.getElementById("rescan-button2").addEventListener("click", async () => {
+    console.log(`${EVENT_HANDLER_LOG} click nút gửi lại trong trang không tìm thấy tài xế`); 
+
+    await handleRescan(); 
+}); 
+
+
+
 
 
 
@@ -758,7 +905,11 @@ document.getElementById("confirm-button").addEventListener("click", async () => 
 // ======================== 5. INIT =================================
 (async () => {
     await loadBookingDetail(); 
+
+    UIState.drivers = "SCANNING"; 
+    updateDriversUI(); 
+
     await pollScanResult(); 
-    loadDetailOfFirstDriver(); 
+    
 })(); 
 
