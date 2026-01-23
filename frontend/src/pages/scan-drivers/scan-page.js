@@ -162,7 +162,8 @@ const state = {
     scan_id: null,
     booking: null, 
     drivers: null,
-    selectedDriver: null
+    selectedDriver: null,
+    focusDriver: null
 }
 
 const UIState = {
@@ -272,11 +273,17 @@ function renderBookingDetails(booking) {
 }
 
 function createDriverRow(driver) {
-    return `<tr data-driver-id="${driver.driver_id}"> 
+    return `<tr data-driver-id="${driver.driver_id}" class="${(driver.driver_id === state.focusDriver.driver_id) ? "bg-cyan-400 text-black hover:bg-cyan-500": "hover:bg-base-200"} cursor-pointer transition focus-within:bg-base-300" tabindex="0"> 
                   
                   <td>${driver.name}</td>
                   <td>${driver.vehicle.type} ${driver.vehicle.capacity} ${driver.vehicle.unit}</td>
-                  <td>${driver.rating} sao</td>
+                  <td class="flex items-center gap-2">${driver.rating} 
+                    <div class="text-yellow-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                        <path fill-rule="evenodd" d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  </td>
                   <td>${driver.distance_to_pickup_km} km</td>
                   <td>${driver.price_offer}</td>
                 </tr>`; 
@@ -317,7 +324,13 @@ function createDriverDetailCard(driver) {
               </div>
               <div class="info flex flex-cols gap-2">
                 <div class="labell">Đánh giá:</div>
-                <div class="content">${driver.rating} sao</div>
+                <div class="content flex items-center gap-2">${driver.rating}
+                  <div class="text-yellow-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                      <path fill-rule="evenodd" d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
               </div>
               <div class="info flex flex-cols gap-2">
                 <div class="labell">Giá cước:</div>
@@ -333,7 +346,7 @@ function createDriverDetailCard(driver) {
             <div class="divider my-2"></div>
 
 
-            <div class="decision-info justify-start">
+            <div class="decision-info justify-start font-semibold">
               <div class="info flex justify-center gap-2">
                 <div class="labell">Tỉ lệ giao đúng hẹn (%):</div>
                 <div class="content">${driver.on_time_rate}</div>
@@ -347,14 +360,8 @@ function createDriverDetailCard(driver) {
             <div class="divider my-2"></div>
 
             <div class="map">
-              <div class="labell flex justify-center">Vị trí tài xế</div>
-              <div class="map-preview border rounded-lg overflow-hidden">
-                <img
-                  src="data:image/jpeg;base64,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"
-                  alt="Vị trí tài xế"
-                  class="w-full h-48 object-cover bg-base-200"
-                />
-              </div>
+              <div class="labell flex justify-center">Vị trí tài xế:</div>
+              <div id="driver-map" class="w-full h-48 rounded-lg border"></div>
             </div>
             
 
@@ -501,6 +508,9 @@ function showDriversEmpty() {
 
 
 
+
+
+
 // 1.1.5 state của trang thông tin chi tiết tài xế
 const driverDetailScanning = document.getElementById("driver-detail-scanning"); console.log(`${DOM_LOG} driver detail scanning: ${driverDetailScanning}`); 
 const driverDetailTimeout = document.getElementById("driver-detail-timeout"); console.log(`${DOM_LOG} driver detail timeout: ${driverDetailTimeout}`);
@@ -567,6 +577,29 @@ function updateDriversUI() {
 
 
 
+// ------------- 1.3 render map side effect ---------- vì nó không hẳn là render một html mới mà là thay đổi cái hiển thị một nội dung html 
+let driverMap = null; 
+let driverMarker = null; 
+
+function initDriverMap(lat, lng) {
+    console.log(`${RENDER_LOG} load bản đồ lên driver-map trong thông tin tài xế`); 
+
+    // 1. nếu map đã tồn tại --> destroy 
+    if (driverMap) {
+        driverMap.remove(); 
+    }
+
+    // 2. gán driverMap với html content 
+    driverMap = L.map("driver-map").setView([lat, lng], 15); 
+
+    // 3. Tile từ OpenStreetMap 
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "$copy; OpenStreetMap contributors",
+    }).addTo(driverMap);
+
+    // 4. Thêm marker 
+    driverMarker = L.marker([lat, lng]).addTo(driverMap); 
+}
 
 
 
@@ -591,7 +624,7 @@ function updateDriversUI() {
 
 
 // ======================== 2. API ============================
-const delay = 3000; // ms
+const delay = 500; // ms
 
 // giống với api /scan-drivers/start
 async function fakeFetchBookingDetails() {
@@ -654,7 +687,7 @@ async function fakeConfirm() {
 
 
 
-const scanTime = 10000; // ms
+const scanTime = 1000; // ms
 // đây là hàm giả sử bên BE 
 function getScanResult() {
     console.log(`${API_LOG} giả lập BE, đó là tính toán xem thời gian từ lúc đầu scan và lúc hỏi kết quả có vượt qua scan time hay chưa`); 
@@ -745,6 +778,7 @@ async function pollScanResult() {
     } else if (scanStatus === "FOUND") {
         console.log(`${CONTROLLER_LOG} đã tìm thấy tài xế: ${drivers}`); 
         UIState.drivers = "FOUND"; 
+        state.focusDriver = state.drivers[0]; 
         updateDriversUI(); 
         renderDriversList(state.drivers); 
         loadDetailOfFirstDriver();   
@@ -761,6 +795,9 @@ function loadDetailOfFirstDriver() {
 
     // 1. render driver details of first driver 
     renderDriverDetail(state.drivers[0]); 
+    setTimeout(() => {
+        initDriverMap(state.drivers[0].location.lat, state.drivers[0].location.lng); 
+    }, 0); 
 }
 
 
@@ -768,6 +805,9 @@ function displayDriverDetails(driver) {
   console.log(`${CONTROLLER_LOG} hiển thị thông tin chi tiết tài xế`); 
 
   renderDriverDetail(driver); 
+  setTimeout(() => {
+      initDriverMap(driver.location.lat, driver.location.lng); 
+  }, 0); 
 }
 
 
@@ -803,6 +843,16 @@ async function handleConfirmDriver() {
     closeConfirmModal(); 
 }
 
+
+function handleUpdateFocusDriver(driver) {
+    console.log(`${CONTROLLER_LOG} hàm xử lí việc cập nhập driver được focus vào`); 
+
+    // 1. cập nhập vào state 
+    state.focusDriver = driver; 
+
+    // 2. render lại nhanh 
+    renderDriversList(state.drivers); 
+}
 
 
 
@@ -893,6 +943,24 @@ document.getElementById("rescan-button2").addEventListener("click", async () => 
     await handleRescan(); 
 }); 
 
+
+
+
+
+driversData.addEventListener("click", (e) => {
+    console.log(`${EVENT_HANDLER_LOG} click vào danh sách tài xế để thay đổi focus`); 
+
+    // 1. kiếm cái hàng gần nhất được click vào 
+    const row = e.target.closest("tr"); 
+    if (!row) return; 
+
+    // 2. kiếm driver từ row đó
+    const driver = state.drivers.find(d => d.driver_id === row.dataset.driverId); 
+    if (!driver) return; 
+
+    // 1. handle update focus driver 
+    handleUpdateFocusDriver(driver); 
+}); 
 
 
 

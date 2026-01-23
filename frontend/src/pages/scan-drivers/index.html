@@ -9,6 +9,13 @@
 
   <!-- DaisyUI -->
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Leaflet CSS -->
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
 </head>
 
 <body class=" min-h-screen flex flex-col">
@@ -19,11 +26,11 @@
       <span class="loading loading-dots loading-lg"></span>
     </div>
 
-    <div id="content-container" class="container flex-1 bg-base-200 flex">
-        <div id="booking-details" class="card w-1/4 bg-base-100 m-4 ml-6"></div>
+    <div id="content-container" class="container flex-1 bg-base-200/75 flex">
+        <div id="booking-details" class="card w-1/4 bg-base-100 m-4 ml-6 shadow-lg"></div>
 
 
-        <div id="drivers-list" class="w-1/2 bg-base-100 p-4">
+        <div id="drivers-list" class="w-1/2 bg-base-100 p-4 shadow-lg">
           <div id="drivers-found" class="hidden">
               <h1 class="title text-4xl font-bold flex justify-center mt-8">Danh sách tài xế</h1>
               <div class="list mt-6">
@@ -121,7 +128,7 @@
         </div> 
 
 
-        <div id="driver-detail" class="card w-1/4 bg-base-100 mr-8 m-6">
+        <div id="driver-detail" class="card w-1/4 bg-base-100 mr-8 m-6 shadow-lg">
           <div id="driver-detail-found" class="hidden"></div>
 
 
@@ -184,7 +191,8 @@
         </div>
     </dialog>
 
-
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="./scan-page.js"></script>
 </body>
 </html>
